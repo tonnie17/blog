@@ -1,7 +1,7 @@
 +++
-title = "DDIA笔记"
+title = "《DDIA》笔记"
 date = 2018-04-25T21:00:09+08:00
-tags = ["web", "数据库"]
+tags = ["web", "数据库", "读书笔记"]
 categories = [""]
 draft = false
 +++
