@@ -42,6 +42,7 @@ draft = false
   - 堆（从低位到高位增长）
   - 栈（从高位到低位增长）
 测试程序：
+
 ```c
   #include <stdio.h>
   #include <stdlib.h>
