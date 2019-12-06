@@ -27,15 +27,25 @@ socket是一种ipc方法（介于传输层和应用层的一组api），允许�
 ## 套接字选项
 
 **SO_BROADCAST**：允许广播
+
 **SO_KEPPALIVE**：周期性测试连接存活
+
 **SO_LINGER**：若有数据报发送则延迟关闭
-l_onoff=0：发送完发送缓冲区的数据并发送FIN。
-l_onoff=1，l_linger=0：那么当close某个连接时TCP将终止该连接，丢弃发送缓冲区和接收缓冲区的数据并发送一个RST到对端，避免了TIME_WAIT。
-l_onoff=1，l_linger!=0：发送完发送缓冲区的数据并发送FIN，丢弃接收缓冲区的数据，如果在CLOSED前延滞时间到，返回EWOULDBLOCK错误。
+
+     l_onoff=0：发送完发送缓冲区的数据并发送FIN。
+
+     l_onoff=1，l_linger=0：那么当close某个连接时TCP将终止该连接，丢弃发送缓冲区和接收缓冲区的数据并发送一个RST到对端，避免了TIME_WAIT。
+
+     l_onoff=1，l_linger!=0：发送完发送缓冲区的数据并发送FIN，丢弃接收缓冲区的数据，如果在CLOSED前延滞时间到，返回EWOULDBLOCK错误。
+
 **SO_RCVBUF**：接收缓冲区大小
+
 **SO_SNDBUF**：发送缓冲区大小
+
 **SO_RCVLOWAT**：接收缓冲区低水平标记
+
 **SO_SNDLOWAT**：发送缓冲区低水平标记
+
 **SO_REUSEADDR**：重用地址
 
 - 允许启动一个监听服务器并捆绑其众所周知的端口，即使以前建立的将端口用作它们的本地端口仍存在。

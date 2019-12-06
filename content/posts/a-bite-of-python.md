@@ -14,7 +14,7 @@ A Bite of Python，也可叫作“咬一口Python”，寓意着Python的冰山�
 
 Python是一门解释型的高级编程语言，由Guido van Rossum于1989年开始编写，并在1991年发布了第一版。Python的特点是代码简洁而且可读性强，使用空格缩进来划分代码块。
 
-![](https://s1.ax2x.com/2018/04/13/NlkSa.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.png)
 
 ## 1.0 安装
 
@@ -814,7 +814,7 @@ type_of_link = type(link)
 type_of_Link = type(Link)
 ```
 
-![](https://s1.ax2x.com/2018/04/13/Nxsqh.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.4.0.png)
 
 在Python中万物皆对象，所有的类都继承自`object`类。
 
@@ -864,7 +864,7 @@ cobj = C()
 mylist = [1,2,3] 
 ```
 
-![](https://s1.ax2x.com/2018/04/13/Nx4jH.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.4.png)
 
 再来一个例子表明它们之间的关系：
 
@@ -960,7 +960,7 @@ pprint(res.tolist())
 
 下面是对上面列表翻译后的一个树状结构，可以看到原来的代码都被翻译成一颗工整的语法树结构了。
 
-![](https://s1.ax2x.com/2018/04/13/NxJCN.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.5.1.png)
 
 ### 1.6.2 指令栈
 
@@ -1093,7 +1093,7 @@ outside() # G
 
 假如下面的一个类结构，D继承了B和C，B和C分别继承了A。
 
-![](https://s1.ax2x.com/2018/04/13/NxZ2u.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.7.1.png)
 
 代码如下，其中A类和C类拥有方法`f`，分别打印A和C：
 
@@ -1136,11 +1136,11 @@ D.__mro__
 
 可以看到在旧式类中，方法的查找顺序为D->B->A->C：
 
-![](https://s1.ax2x.com/2018/04/13/NxvV9.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.7.2.png)
 
 而在新式类中，方法的查找顺序为D->B->C->A：
 
-![](https://s1.ax2x.com/2018/04/13/NxyvA.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.7.3.png)
 
 在Python 3.x出现后，就只保留新式类了，采用的MRO规则为C3算法。
 
@@ -1457,7 +1457,7 @@ class Sized(metaclass=ABCMeta):
 
 下图是`list`与其它容器类之间的关系：
 
-![](https://s1.ax2x.com/2018/04/13/NxPlO.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/2.0.1.png)
 
 了解更多抽象容器类可查看`collections.abc`这个模块。
 
@@ -1611,7 +1611,7 @@ def go():
 go()
 ```
 
-![](https://s1.ax2x.com/2018/04/13/NxcBq.png)
+![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/3.1.1.png)
 
 在下面这个例子中，`f`函数通过获取调用链中前一个栈帧的信息，拿到`add`函数栈帧中局部变量`a`与`b`的值，使得`f`函数在不接收参数的情况下完成了透明的加法：
 

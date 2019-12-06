@@ -115,13 +115,13 @@ python server.py
 
 当我们输入python server.py时，会建立一个服务器（也叫应用程序服务器，即application server）来监听请求，并把请求转给flask来处理。那么这个服务器是如何跟python程序打交道的呢？答案就是[WSGI](http://archimedeanco.com/wsgi-tutorial/%23)(Web Server Gateway Interface)接口，它是server端（服务器）与application端（应用程序）之间的一套约定俗成的规范，使我们只要编写一个统一的接口，就能应用到不同的wsgi server上。用图表示它们的关系，就是下面这样的：
 
-![img](https://s1.ax2x.com/2018/04/13/NALui.jpg)
+![img](https://pic3.zhimg.com/80/v2-4f9e190627003e1b56fab93afba5f3ca_hd.png)
 
 只要application端（flask）和server端（flask内建的server）都遵循wsgi这个规范，那么他们就能够协同工作了，关于WSGI规范，可参阅Python官方的[PEP 333](https://www.python.org/dev/peps/pep-0333/)里的说明。
 
 目前为止，应用是下面这个样子的：
 
-![img](https://s1.ax2x.com/2018/04/13/NAALJ.jpg)
+![img](https://pic2.zhimg.com/80/v2-73e7f74fc237221f65dc3fe0cb30a911_hd.png)
 
 一切都很简单，现在我们要做一个Todo应用，提供添加todo，修改todo状态和删除todo的接口。
 
@@ -343,7 +343,7 @@ if __name__ == '__main__':
 
 这样一来，应用的数据便能持久化到本地了。现在，整个应用看起来是下面这样的：
 
-![img](https://s1.ax2x.com/2018/04/13/NAEHY.jpg)
+![img](https://pic1.zhimg.com/80/v2-0aa027a5a04db7ac2245f42f39b94f78_hd.png)
 
 现在往mongodb插入1万条数据。
 
@@ -492,7 +492,7 @@ gunicorn --workers=9 server:app --bind 127.0.0.1:8000
 
 可以看到gunicorn启动了9个进程（其中1个父进程）监听请求。使用了多进程的模型看起来是下面这样的：
 
-![img](https://s1.ax2x.com/2018/04/13/NAr8r.jpg)
+![img](https://pic2.zhimg.com/80/v2-7ecc8340792bd7009cd02f41e092605d_hd.png)
 
 继续进行性能测试，可以看到吞吐量又有了很大的提升：
 
@@ -592,7 +592,7 @@ Transfer/sec:      1.71MB
 
 现在应用的结构是这样的：
 
-![img](https://s1.ax2x.com/2018/04/13/NAcyR.jpg)
+![img](https://pic3.zhimg.com/80/v2-86eb1b5263ae630d097e1173e3848032_hd.png)
 
 但仅仅是这样还是不足以应对高并发下的请求的，洪水般的请求势必是对数据库的一个重大考验，把请求数提升到1000，出现了大量了timeout：
 
@@ -659,7 +659,7 @@ Transfer/sec:      4.47MB
 
 下面是加入缓存后的系统结构：
 
-![img](https://s1.ax2x.com/2018/04/13/NAaYd.jpg)
+![img](https://pic4.zhimg.com/80/v2-207c6dfdd3777b49c0a5b507ec4886fb_hd.png)
 
 目前为止还不能说完善，如果中间某个进程挂掉了，那么整个系统的稳定性就会土崩瓦解。为此，要在中间加入一个进程管理工具：supervisor来监控和重启应用进程。
 
@@ -680,7 +680,7 @@ stderr_logfile=error.log
 supervisord -c supervisord.conf
 ```
 
-![img](https://s1.ax2x.com/2018/04/13/NAy7e.jpg)
+![img](https://pic1.zhimg.com/80/v2-a165341ad880a5bcb1e2bd8d6623d800_hd.png)
 
 虽然缓存可以有效地帮我们减轻数据库的压力，但如果系统遇到大量并发的耗时任务时，进程也会阻塞在任务的处理上，影响了其他普通请求的正常响应，严重时，系统很可能会出现假死现象，为了针对对耗时任务的处理，我们的应用还需要引入一个外部作业的处理系统，当程序接收到耗时任务的请求时，交给任务的工作进程池来处理，然后再通过异步回调或消息通知等方式来获得处理结果。
 
@@ -690,7 +690,7 @@ supervisord -c supervisord.conf
 
 Celery是基于Python的一个分布式的消息队列调度系统，我们把Celery作为消息调度器，Redis作为消息存储器，那么应用看起来应该是这样的。
 
-![img](https://s1.ax2x.com/2018/04/13/NAhGO.jpg)
+![img](https://pic3.zhimg.com/80/v2-38e3f9f636f1e4c80f6bdbe4093a4d0e_hd.png)
 
 一般来说，这个结构已经满足大多数的小规模应用了，剩下做的就是代码和组件配置的调优了。
 
@@ -770,6 +770,6 @@ f8630d4b48d7        spotify/kafka       "supervisord -n"         2 weeks ago    
 
 分布式的应用的结构是下面这样的：
 
-![img](https://s1.ax2x.com/2018/04/13/NAvEq.jpg)
+![img](https://pic4.zhimg.com/80/v2-8a8fd9da3b83b31a331105ce3b81f75b_hd.png)
 
 展开来说还有很多，服务架构，自动化运维，自动化部署，版本控制、前端，接口设计等，不过我认为到这里，作为后端的基本职责就算是完成了。除了基本功，帮你走得更远的是内功：**操作系统、数据结构、计算机网络、设计模式、数据库**这些能力能帮助你设计出更加完好的程序。
