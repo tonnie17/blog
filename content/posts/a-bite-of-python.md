@@ -14,8 +14,6 @@ A Bite of Python，也可叫作“咬一口Python”，寓意着Python的冰山�
 
 Python是一门解释型的高级编程语言，由Guido van Rossum于1989年开始编写，并在1991年发布了第一版。Python的特点是代码简洁而且可读性强，使用空格缩进来划分代码块。
 
-![](https://github.com/tonnie17/a_bite_of_python/raw/master/img/1.png)
-
 ## 1.0 安装
 
 用浏览器访问官网的下载页面[Download Python](https://www.python.org/downloads/)，选择合适的版本下载安装。

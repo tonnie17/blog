@@ -42,7 +42,7 @@ a89d281829f9        nginx:latest        "nginx -g 'daemon ..."   8 minutes ago  
 
 现在访问宿主机地址的80端口，看到nginx的欢迎页面。
 
-![img](https://pic2.zhimg.com/80/v2-5739f27ff72eb5d169ac722f4a3d4985_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-5739f27ff72eb5d169ac722f4a3d4985_1440w.jpg)
 
 Docker容器本质上是一个运行的进程以及它需要的一些依赖，而Docker镜像则是定义这个容器的一个"模版"。
 
@@ -135,7 +135,7 @@ veth8231e5b Link encap:Ethernet  HWaddr 16:e8:f2:1d:e1:4d
 
 我找了一张图，可以很好地表示veth对的存在方式：
 
-![img](https://pic1.zhimg.com/80/v2-ddb10d3a0d4382769c65ec58aba34cb8_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-ddb10d3a0d4382769c65ec58aba34cb8_1440w.jpg)
 
 而真正实现端口转发的魔法的是nat规则。如果容器使用-p指定映射的端口时，docker会通过iptables创建一条nat规则，把宿主机打到映射端口的数据包通过转发到docker0的网关，docker0再通过广播找到对应ip的目标容器，把数据包转发到容器的端口上。反过来，如果docker要跟外部的网络进行通信，也是通过docker0和iptables的nat进行转发，再由宿主机的物理网卡进行处理，使得外部可以不知道容器的存在。
 
@@ -384,7 +384,7 @@ $ docker run -d --name=app -p 8080:8000 -v /code:/usr/src/app --link=redis:db te
 
 目前为止，项目的应用结构图如下：
 
-![img](https://pic1.zhimg.com/80/v2-cb0504f8687aeb519702220aee5e9f98_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-cb0504f8687aeb519702220aee5e9f98_1440w.jpg)
 
 现在，如果Redis这个节点出现故障的话会怎么样？
 
@@ -399,7 +399,7 @@ $ docker run -d --name=redis_slave_2 -p 6381:6379 --link=redis:master redis redi
 
 现在写入到Redis主节点的数据都会在从节点上备份一份数据。
 
-![img](https://pic3.zhimg.com/80/v2-b97bbd401b2f169c36a3b660206c1abe_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-b97bbd401b2f169c36a3b660206c1abe_1440w.jpg)
 
 现在看起来好多了，然而当Redis master挂掉之后，服务仍然会变的不可用，所以当master宕机时还需要通过选举的方式把新的master节点推上去（故障迁移），Redis Sentinel正是一个合适的方式，我们建立Sentinel集群来监控Redis master节点，当master节点不可用了，再由Sentinel集群根据投票选举出slave节点作为新的master。
 
@@ -451,7 +451,7 @@ $ docker run -d --name=sentinel_3 --link=redis:redis-master [build_sentinel_imag
 
 这下Sentinel的容器也搭建起来了，应用的结构图如下：
 
-![img](https://pic1.zhimg.com/80/v2-998b4229612939a15a00ec1905698ce4_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-998b4229612939a15a00ec1905698ce4_1440w.jpg)
 
 简单验证一下当redis主节点挂掉后sentinel怎么处理：
 
@@ -486,7 +486,7 @@ rds = sentinel.master_for('master')
 
 下面再来考虑这种情况：
 
-![img](https://pic2.zhimg.com/80/v2-82883b356a1e23e3b00e2c48874c6b05_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-82883b356a1e23e3b00e2c48874c6b05_1440w.jpg)
 
 假设我们对django_app容器进行伸缩，扩展出三个一模一样的django应用容器，这时候怎么办，该访问哪个？显然，这时候需要一个负载均衡的工具作为web应用的前端，做反向代理。
 
@@ -496,7 +496,7 @@ nginx是一个非常流行的web服务器，用它完成这个当然没问题，
 
 **LVS**（Linux Virtual Server）作为最外层的服务，负责对系统到来的请求做负载均衡，转发到后端的服务器（Real Server）上，DR（Direct Route）算法是指对请求报文的数据链路层进行修改mac地址的方式，转发到后端的一台服务器上，后端的服务器集群只需要配置和负载均衡服务器一样的虚拟IP（VIP），请求就会落到对应mac地址的服务器上，跟NAT模式相比，DR模式不需要修改目的IP地址，因此在返回响应时，服务器可以直接将报文发送给客户端，而无须转发回负载均衡服务器，因此这种模式也叫做三角传输模式。
 
-![img](https://pic1.zhimg.com/80/v2-7304eb955fbba3f6d7fa9e68ae9b295c_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-7304eb955fbba3f6d7fa9e68ae9b295c_1440w.jpg)
 
 **Haproxy**是一个基于TCP/HTTP的负载均衡工具，在负载均衡上有许多精细的控制。下面简单地使用Haproxy来完成上面的负载均衡和转发。
 
@@ -561,7 +561,7 @@ $ docker run -d --name=lb -p 80:6301 --link app1:app1 --link app2:app2 --link ap
 
 这时候访问宿主机的80端口后，haproxy就会接管请求，用roundrobin方式轮询代理到后端的三个容器上，实现健康检测和负载均衡。
 
-![img](https://pic1.zhimg.com/80/v2-d062d1fdf14599bbc9ecfe079f187e90_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-d062d1fdf14599bbc9ecfe079f187e90_1440w.jpg)
 
 现在又有一个问题了，每次我们想增加或者减少web应用的数量时，都要修改haproxy的配置并重启haproxy，十分的不方便。
 
@@ -681,11 +681,11 @@ $ docker logs -f lb
 
 最终的应用结构图如下：
 
-![img](https://pic2.zhimg.com/80/v2-88b388de097ea2f544c8a410a9968d19_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-88b388de097ea2f544c8a410a9968d19_1440w.jpg)
 
 运行在机器上的服务时刻有可能有意外发生，因此我们需要一个服务来监控机器的运行情况和容器的资源占用。netdata是服务器的一个实时监测工具，利用它可以直观简洁地了解到服务器的运行情况。
 
-![img](https://pic2.zhimg.com/80/v2-2ea958637a9cb150a8e17ba8a173e401_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-2ea958637a9cb150a8e17ba8a173e401_1440w.jpg)
 
 当docker镜像和容器数量增多的情况下，手工去运行和定义docker容器以及其相关依赖无疑是非常繁琐和易错的工作。Docker Compose是由Docker官方提供的一个容器编排和部署工具，我们只需要定义好docker容器的配置文件，用compose的一条命令即可自动分析出容器的启动顺序和依赖，快速的部署和启动容器。
 

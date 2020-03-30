@@ -110,11 +110,11 @@ nginx:stable-alpine
 
 **certbot**是一个部署Let's Encrypt项目的自动化工具，打开[certbot](https://certbot.eff.org/)的官方页面，看到如下图的选择框：
 
-![img](https://pic4.zhimg.com/80/v2-d085c5d17e66127ef1bbebef7e57fc03_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-d085c5d17e66127ef1bbebef7e57fc03_1440w.png)
 
 选择自己机器上使用的服务器（如Nginx，Apache...）以及操作系统，即可得到对应的操作步骤，例如我的是nginx+debian，官方给出了下面的安装和使用命令：
 
-![img](https://pic1.zhimg.com/80/v2-e577b4e75f082472a6a056316eaa7098_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-e577b4e75f082472a6a056316eaa7098_1440w.png)
 
 安装certbot：
 
@@ -217,7 +217,7 @@ server {
 
 打开网页，发现左边有了把绿色的小锁了，说明https证书已经被正确安装了：
 
-![img](https://pic2.zhimg.com/80/v2-fede2a570c2416e0119b4070213fca09_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-fede2a570c2416e0119b4070213fca09_1440w.png)
 
 对一个https网站进行抓包可以看到tls的通信过程：
 
@@ -227,7 +227,7 @@ server {
 
 阶段，客户端向服务器提供支持的加密方法、压缩方法和协议版本，以及一个随机数，发送给服务器。
 
-![img](https://pic3.zhimg.com/80/v2-4e8f13765ae89b304c86ff7a3316728a_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-4e8f13765ae89b304c86ff7a3316728a_1440w.png)
 
 2.
 
@@ -235,15 +235,15 @@ server {
 
 阶段，服务器根据客户端传来的信息确定稍后使用的加密方法，压缩方法和协议版本，以及生成服务器端的随机数返回给客户端。
 
-![img](https://pic1.zhimg.com/80/v2-1c3459afc0a07e8335ec86a513e3a274_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-1c3459afc0a07e8335ec86a513e3a274_1440w.png)
 
 同时也把证书信息发送给客户端：
 
-![img](https://pic3.zhimg.com/80/v2-c15641139ee919f72abde9c710222c8e_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-c15641139ee919f72abde9c710222c8e_1440w.png)
 
 必要的话服务器端会发送带有公钥信息的报文给客户端，让客户端得到服务器的证书和公钥，这个阶段叫**Server Key Exchange**。
 
-![img](https://pic3.zhimg.com/80/v2-084748081df510112bb5efe2c97307fa_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-084748081df510112bb5efe2c97307fa_1440w.png)
 
 3.紧接着客户端会对服务器端发送过来的证书进行验证，确认传输状态，这两个过程为
 
@@ -255,7 +255,7 @@ server {
 
 阶段，确认无误后客户端生成一个随机数并用服务器的公钥加密，给服务器发送通知。
 
-![img](https://pic1.zhimg.com/80/v2-33e9c3f017d9346c963b2e2a7754fc40_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-33e9c3f017d9346c963b2e2a7754fc40_1440w.png)
 
 4.最后服务器已经收到客户端的通知了，用私钥解密客户端发送过来的随机数，这时候双方都拥有3个随机数的信息了，于是可以通过加密方法生成对话密钥，加密发送的数据了。服务器这时候也进入
 
@@ -263,7 +263,7 @@ server {
 
 阶段，确认传输状态，双方可以进行加密的通信了，这时候服务器还会给客户端发送一个session ticket，客户端根据session ticket可以在客户端保存会话状态，这个session ticket是被密钥加密的，所以不用担心会话被窃听。
 
-![img](https://pic1.zhimg.com/80/v2-5494cfdf7447b12f70a98f0a0cfea938_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-5494cfdf7447b12f70a98f0a0cfea938_1440w.png)
 
 ## 启用http2
 
@@ -282,15 +282,15 @@ server {
 
 重启nginx服务，打开网页，此时通过chrome的控制台可以看到协议一列的值为h2，说明网站使用http2协议进行通信：
 
-![img](https://pic2.zhimg.com/80/v2-0ecf1d166a77f4967865d5b36fd2721d_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-0ecf1d166a77f4967865d5b36fd2721d_1440w.png)
 
 在chrome地址栏输入chrome://net-internals/#http2，可以看到当前http2的会话信息，点击session id，我们可以观察到这个会话的传输信息：
 
-![img](https://pic3.zhimg.com/80/v2-a3e362ad9b7ee7875f61070e581321c6_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-a3e362ad9b7ee7875f61070e581321c6_1440w.png)
 
 通过mimtproxy可以看出这个http2请求的一些信息，以下结果显示了这个请求使用了HTTP/2.0协议，TLS版本为1.2，证书机构为Let's Encrypt：
 
-![img](https://pic4.zhimg.com/80/v2-3db1b9d02a23c535133bafd16d18513f_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-3db1b9d02a23c535133bafd16d18513f_1440w.png)
 
 至此，http2的升级就算完成了。
 

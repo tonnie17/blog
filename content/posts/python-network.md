@@ -114,7 +114,7 @@ python3.4 1128 tonnie    4u  IPv4 0x17036ae156ec58cf      0t0  TCP *:irdmi (LIST
 
 至于客户端，在每个阶段也有各自的状态，下图表示了TCP状态迁移的过程：
 
-![img](https://pic1.zhimg.com/80/v2-11a83cab93a101daf0b0db542aca7588_hd.jpg)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-11a83cab93a101daf0b0db542aca7588_1440w.jpg)
 
 下面来看TCP/IP的四层模型：
 
@@ -123,7 +123,7 @@ python3.4 1128 tonnie    4u  IPv4 0x17036ae156ec58cf      0t0  TCP *:irdmi (LIST
 3. 网络层，在这一层上的有IP、ARP等。
 4. 网络接口层，在这一层上的有以太网、PPP等。
 
-![img](https://pic3.zhimg.com/80/v2-9cbae2cc1ed58a9afb3a8341ee4ca952_hd.jpg)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-9cbae2cc1ed58a9afb3a8341ee4ca952_1440w.jpg)
 
 在上面的程序中，客户端与服务器端的通信都要经过这四个层来打交道。那么这段Python程序是如何操作连接的建立和关闭以及数据的传输呢？答案是通过socket提供的一系列方法。
 
@@ -181,7 +181,7 @@ while 1:
 
 socket的数据是通过内核维护的读写缓冲区来获取的，如下图中的表示：
 
-![img](https://pic2.zhimg.com/80/v2-eb72f0fd73e6e431303cd98fbe31ec09_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-eb72f0fd73e6e431303cd98fbe31ec09_1440w.png)
 
 每次从缓冲区写入或读入数据都会发起标准的系统调用，如：
 
@@ -192,7 +192,7 @@ int write(fd, buf, bufwrite);
 
 来进行数据的写或读。当然对于大文件来说，执行多次read、write等系统调用的耗费是相当可观的，这时候就要用到**sendfile**系统调用：
 
-![img](https://pic2.zhimg.com/80/v2-cda12ad85cda92b63ac25b486c00b8d1_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-cda12ad85cda92b63ac25b486c00b8d1_1440w.png)
 
 **socket的域**
 
@@ -577,7 +577,7 @@ IO调用中有两个概念：
 
 用一张图总结5个IO模型是这样的：
 
-![img](https://pic3.zhimg.com/80/v2-7e2c42ee86f13913646d13bc65582436_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-7e2c42ee86f13913646d13bc65582436_1440w.png)
 
 使用多路IO复用模型能有效提高网络编程的质量。
 
@@ -693,7 +693,7 @@ Encountered an end tag : html
 
 主机到IP的转换通常要经过DNS查询，DNS是一个庞大的分布式数据库，它将主机名组织在一个层级的空间中，一个节点的域名由该节点到根的路径所有节点组成的名字连接而成。
 
-![img](https://pic3.zhimg.com/80/v2-4575b995a28ba241392f8058cb7c4c9e_hd.png)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-4575b995a28ba241392f8058cb7c4c9e_1440w.png)
 
 使用dnspython包可以方便地进行dns查询：
 

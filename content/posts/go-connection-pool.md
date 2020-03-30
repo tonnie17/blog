@@ -14,7 +14,7 @@ draft = false
 
 下面这个表格展示了它们的特点：
 
-![img](https://pic1.zhimg.com/80/v2-6842d9f87f8156492117f2caf846e834_hd.jpg)
+![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-6842d9f87f8156492117f2caf846e834_1440w.jpg)
 
 ## **go-redis**
 
