@@ -5,7 +5,6 @@
 	{{ end }}
 	<a href='{{ .Site.BaseURL }}posts'>{{ with .Site.Params.archive }}{{ . }}{{ else }}Archive{{ end }}</a>
 	<a href='{{ .Site.BaseURL }}notes'>{{ with .Site.Params.notes }}{{ . }}{{ else }}Notes{{ end }}</a>
-	<a href='{{ .Site.BaseURL }}tags'>{{ with .Site.Params.tags }}{{ . }}{{ else }}Tags{{ end }}</a>
 	<a href='{{ .Site.BaseURL }}about'>{{ with .Site.Params.about }}{{ . }}{{ else }}About{{ end }}</a>
 
 	{{ range $key, $val := .Site.Params.Links }}
