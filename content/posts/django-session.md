@@ -45,7 +45,7 @@ server.serve_forever()
 
 查看服务器端的http响应头，会发现以下字段：
 
-```
+```shell
 Set-Cookie: id=some_value_42
 ```
 
@@ -118,7 +118,7 @@ def test_count_session(request):
 
 查看http的响应头，会得到类似下面的信息。
 
-```
+```shell
 Set-Cookie:sessionid=a92d67e44a9b92d7dafca67e507985c0;
            expires=Thu, 07-Jul-2011 04:16:28 GMT;
            Max-Age=1209600;
@@ -155,7 +155,7 @@ print(sess.get_decoded())
 
 输出
 
-```
+```shell
 ZmEyNDVhNTBhMTk2ZmRjNzVlYzQ4NTFjZDk2Y2UwODc3YmVjNWVjZjqAAn1xAVUFY291bnRxAksG
 cy4=
 
@@ -253,7 +253,7 @@ def test_user(request):
 
 在这个例子中，成功登录后，session表会保存类似下面的信息，里面记录了用户的id，以后进行验证时，便会到这个表中获取用户的信息。
 
-```
+```shell
 {'_auth_user_id': 1, '_auth_user_backend': 'django.contrib.auth.backends.ModelBackend'}
 ```
 

@@ -399,7 +399,7 @@ version_info
 
 相对导入一般可以用`from <> import`的语法来完成，在PEP 328中有一个例子，假设当前的目录结构如下：
 
-```
+```shell
 package/
     __init__.py
     subpackage1/
@@ -917,7 +917,7 @@ pprint(res.tolist())
 
 不难看出，这个结果列表是一个树状结构：
 
-```
+```shell
 [257,
  [269,
   [295,
@@ -979,7 +979,7 @@ dis.dis(loop)
 
 下面输出的字节码的指令含义都可以在[library/dis](https://docs.python.org/3/library/dis.html)中找到。
 
-```
+```shell
   2           0 LOAD_CONST               1 (1)
               2 STORE_FAST               0 (x)
 
@@ -1114,13 +1114,13 @@ D().f()
 
 其中2.7输出的是：
 
-```
+```shell
 A
 ```
 
 而3.6输出的是：
 
-```
+```shell
 C
 ```
 
@@ -1340,7 +1340,7 @@ cat test.json | python3 -m json.tool
 
 例如现在定义了下面的一个目录：
 
-```
+```shell
 ├── __init__.py
 ├── l1.py
 └── sub_package
@@ -2591,7 +2591,7 @@ Out[4]: False
 
 格式化一个json文件
 
-```
+```shell
 python -m json.tool test.json
 echo '{"json":"obj"}' | python -m json.tool # 管道
 ```
@@ -2641,7 +2641,7 @@ for multiplier in create_multipliers():
 
 在下面这个例子中， 两个值相等的整形变量在两次比较地址时出现了不一样的情况，原因时因为Python会把频繁使用的小整数放在内存池中，因此在Python中使用范围在[-5,256]的数字时都会得到相同的内存地址。
 
- ```python
+```python
  a = 256
  b = 256
  id(a) == id(b)
@@ -2650,7 +2650,7 @@ for multiplier in create_multipliers():
  b = 257
  id(a) == id(b)
  # False
- ```
+```
 
 ## 4.5 GIL
 

@@ -14,25 +14,25 @@ draft = false
 
 1.首先执行下面的命令开启一个监听8000端口的HTTP服务器：
 
-   ```
-   python3 -m http.server 8000
-   Serving HTTP on 0.0.0.0 port 8000 ...
-   ```
+```shell
+python3 -m http.server 8000
+Serving HTTP on 0.0.0.0 port 8000 ...
+```
 
 2.接着编写一个程序，来对这个服务器发起HTTP请求：
 
-   ```python
-   import requests
-   r = requests.get('http://127.0.0.1:8000/')
-   print(r)
-   ```
+```python
+import requests
+r = requests.get('http://127.0.0.1:8000/')
+print(r)
+```
 
 3.再执行这个程序：
 
-   ```
-   bash-3.2$ python test.py
-   <Response [200]>
-   ```
+```shell
+bash-3.2$ python test.py
+<Response [200]>
+```
 
 可以看到，服务器返回了一个200成功响应。
 
@@ -45,26 +45,26 @@ draft = false
 
 在命令行用tcpdump来监听本地网卡的tcp连接，
 
-```
+```shell
 tcpdump -i lo0 port 8000
 ```
 
 或者你也可以用-w参数把信息写出到文件，再通过wireshark来观察结果：
 
-```
+```shell
 tcpdump -i lo0 port 8000 -w test.cap
 ```
 
 现在执行程序：
 
-```
+```shell
 bash-3.2$ python test.py
 <Response [200]>
 ```
 
 不出意外的话，我们就能观察到tcpdump输出类似如下的结果：
 
-```
+```shell
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on lo0, link-type NULL (BSD loopback), capture size 262144 bytes
 23:46:06.464962 IP localhost.49329 > localhost.irdmi: Flags [S], seq 1191154495, win 65535, options [mss 16344,nop,wscale 5,nop,nop,TS val 178410641 ecr 0,sackOK,eol], length 0
@@ -95,7 +95,7 @@ listening on lo0, link-type NULL (BSD loopback), capture size 262144 bytes
 
 现在再来看服务器端的状态，通过lsof命令来查看绑定8000端口的描述符信息：
 
-```
+```shell
 lsof -n -i:8000          
 COMMAND    PID   USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
 python3.4 1128 tonnie    4u  IPv4 0x17036ae156ec58cf      0t0  TCP *:irdmi (LISTEN)
@@ -185,7 +185,7 @@ socket的数据是通过内核维护的读写缓冲区来获取的，如下图�
 
 每次从缓冲区写入或读入数据都会发起标准的系统调用，如：
 
-```
+```c
 int read(fd, buf, bufsize);
 int write(fd, buf, bufwrite);
 ```
@@ -248,7 +248,7 @@ shutdown()不会显式关闭文件描述符，需要另外调用close()。
 
 再回到最开始的那段代码：
 
-```
+```shell
 python3 -m http.server 8000
 Serving HTTP on 0.0.0.0 port 8000 ...
 ```
@@ -293,7 +293,7 @@ class HTTPServer(socketserver.TCPServer):
 
 它继承了**socketserver.TCPServer**这个类，找到socketserver所在的源码，发现有一段注释，说明了几个服务器类之间的关系。
 
-```
+```shell
 +------------+
 | BaseServer |
 +------------+
@@ -603,14 +603,14 @@ HTTP的请求信息包括几个要素：
 
 例如在第一个例子中，我们向8000端口发起请求：
 
-```
+```shell
 GET / HTTP/1.1 （请求行）
 Host: 127.0.0.1:8000 （请求头）
 ```
 
 会得到以下回应：
 
-```
+```shell
 HTTP/1.0 200 OK （响应行）
 Content-Length: 5252
 Content-type: text/html; charset=utf-8

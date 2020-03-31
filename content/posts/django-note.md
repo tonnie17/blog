@@ -76,7 +76,7 @@ Flake8是检查Python代码健壮性的一个工具，它包括了PyFlake，pep8
 
 当用django-admin startproject [projectname] .时，加上virtualenv目录后，会得到如下的目录结构：
 
-```
+```shell
 [projectname]/
 ├── [projectname]/
 │   ├── __init__.py
@@ -89,7 +89,7 @@ Flake8是检查Python代码健壮性的一个工具，它包括了PyFlake，pep8
 
 在此基础上，如果想要细分配置文件，目录结构则变为如下：
 
-```
+```shell
 [projectname]/
 ├── [projectname]/
 │   ├── __init__.py
@@ -106,7 +106,7 @@ Flake8是检查Python代码健壮性的一个工具，它包括了PyFlake，pep8
 
 除此之外，项目还需要有docs(文档目录)，conf（配置目录），static（静态文件目录），scripts（配置脚本文件目录），以及各应用的模块目录，综上，项目目录结构如下划分：
 
-```
+```shell
 [projectname]/
 ├── [projectname]/
 │   ├── __init__.py
@@ -134,7 +134,7 @@ Flake8是检查Python代码健壮性的一个工具，它包括了PyFlake，pep8
 
 前面说过，配置项可以细分，这里一般情况可以分成三个文件，分别是common(或base，它包含了项目的通用配置)，dev（或local，它包含了项目开发调试环境的配置），prod（它包含了项目运行部署环境的配置）。
 
-```
+```shell
  ├── settings/
 	├── common.py
 	├── dev.py
@@ -144,13 +144,13 @@ Flake8是检查Python代码健壮性的一个工具，它包括了PyFlake，pep8
 
 在运行服务器时，可以加上--settings选项，选择相应的配置项。
 
-```
+```shell
  django-admin runserver --settings=[projectname].settings.dev
 ```
 
 或者在服务器环境如下设置：
 
-```
+```shell
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings")
 ```
@@ -159,7 +159,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "app.settings")
 
 下面是常见的模版结构，app的所有页面继承自base.html模版。
 
-```
+```shell
 app/
 └── templates
 	└── base.html
@@ -203,7 +203,7 @@ Python的另一个模版库。
 
 先来看下面这段代码，它遍历用户列表（user_list由User.objects.all()产生）中的每个用户，并展示用户的出生日期，乍一看没什么问题，但这里实际上隐含了n+1问题，user.profile.birth在每次遍历中都进行了一次数据库查询，要解决这个问题也十分简单，只要用select_related操作把user关联的profile提前join取出来即可。
 
-```
+```shell
 {% for user in user_list %}
     <li>{{ user.profile.birth }}</li>
 {% endfor%}
@@ -217,7 +217,7 @@ Python的另一个模版库。
 
 在项目的开发阶段，可以把静态文件统一放置在public(公共目录)下，或在各个app模块的static目录，在部署阶段再统一collectstatic到根目录的static中。
 
-```
+```shell
 public/
 └── static
     ├── css
@@ -236,7 +236,7 @@ public/
 
 添加错误代码的处理视图，使错误提示对用户更加友好。
 
-```
+```shell
 from django.conf.urls import handler404, handler500
 
 handler404 = 'views.page_not_found'
@@ -299,7 +299,7 @@ class User(AbstractUser):
 
 默认的用户验证是通过username和password这两个字段，如果想要自定义用户验证，则可以如下建立一个验证的backend，然后在settings的AUTHENTICATION_BACKENDS中添加这个类。
 
-```
+```python
  class EmailAuthBackend(object):
     def authenticate(self, username=None, password=None):
         try:
@@ -410,7 +410,7 @@ if not datas:
 
 django集成的Migrations提供了数据迁移的功能。假如你修改了数据库的schema（model），只需要两条命令便可实现数据的迁移。
 
-```
+```shell
 python manage.py makemigrations
 python manage.py migrate
 ```

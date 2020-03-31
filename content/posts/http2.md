@@ -22,7 +22,7 @@ draft = false
 
 为了支持http2，nginx需要安装http_v2_module这个扩展，执行nginx -V来检查你的nginx是否已经安装了这个扩展：
 
-```
+```shell
 nginx version: nginx/1.10.3
 built by gcc 5.3.0 (Alpine 5.3.0)
 built with OpenSSL 1.0.2k  26 Jan 2017
@@ -32,7 +32,7 @@ configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-p
 
 可以看到最后一行显示nginx已经安装了http2的扩展，nginx从1.9.5版本后就开始支持http_v2module这个扩展*，*如果你没有这个扩展，可以下载新的nginx源码包，编译时加入--with-http_v2_module这个参数：
 
-```
+```shell
 ./configure --prefix=/etc/nginx \
 --sbin-path=/usr/sbin/nginx \
 --modules-path=/usr/lib/nginx/modules \
@@ -80,20 +80,20 @@ configure arguments: --prefix=/etc/nginx --sbin-path=/usr/sbin/nginx --modules-p
 
 要升级openssl，你需要把openssl 1.0.2的源码包下载下来重新编译：
 
-```
+```shell
 wget https://www.openssl.org/source/openssl-1.0.2-latest.tar.gz
 ```
 
 执行openssl version查看openssl当前版本，已经为1.0.2了：
 
-```
+```shell
 openssl version
 OpenSSL 1.0.2k  26 Jan 2017
 ```
 
 如果你对以上安装nginx和升级openssl的步骤感到麻烦，你也可以通过docker下载nginx alpine版本的镜像，里面已经内置了openssl的最新版本以及支持httpv2的nginx，只需要把证书和网站目录映射到nginx容器内部，运行docker容器：
 
-```
+```shell
 docker run -d \
 --name=nginx \
 --net=host \
@@ -118,13 +118,13 @@ nginx:stable-alpine
 
 安装certbot：
 
-```
+```shell
 sudo apt-get install certbot
 ```
 
 接着使用certbot来部署证书，输入certbot certonly进入命令行的向导：
 
-```
+```shell
 $ certbot certonly
 
 How would you like to authenticate with the ACME CA?
@@ -142,7 +142,7 @@ certbot提供了两种验证方式：
 
 在webroot模式下我们需要在web server配置一个路径以供Let's Encrypt进行验证，下面修改nginx的配置，目录/var/www/le即为Let's Encrypt进行验证的目录：
 
-```
+```shell
 location ^~ /.well-known/acme-challenge/ {
   default_type "text/plain";
   root /var/www/le;
@@ -155,20 +155,20 @@ location = /.well-known/acme-challenge/ {
 
 下一步输入你网站的域名：
 
-```
+```shell
 Please enter in your domain name(s) (comma and/or space separated)  (Enter 'c'
 to cancel):liangwentao.cc
 ```
 
 然后下一步输入webroot的路径，就是之前nginx中root指令指向的目录：
 
-```
+```shell
 Input the webroot for test.testnode.com: (Enter 'c' to cancel):/var/www/le
 ```
 
 最后certbot验证成功，生成证书：
 
-```
+```shell
 Waiting for verification...
 Cleaning up challenges
 Generating key (2048 bits): /etc/letsencrypt/keys/0000_key-certbot.pem
@@ -188,7 +188,7 @@ IMPORTANT NOTES:
 
 执行certbot certificates可以发现证书和私钥都已经在/etc/letsencrypt/live这个目录下了。
 
-```
+```shell
 $ certbot certificates
 Saving debug log to /var/log/letsencrypt/letsencrypt.log
 
@@ -204,7 +204,7 @@ Found the following certs:
 
 最后还要在nginx上添加配置，使用刚才生成的证书：
 
-```
+```shell
 server {
   listen 443 ssl;
   listen [::]:443 ssl ipv6only=on;
@@ -269,7 +269,7 @@ server {
 
 要启用http2，我们修改刚才nginx的配置，在监听的端口后面加上http2参数：
 
-```
+```shell
 server {
   listen 443 http2 ssl;
   listen [::]:443 http2 ssl ipv6only=on;

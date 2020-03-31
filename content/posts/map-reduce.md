@@ -36,7 +36,7 @@ $$
 
 一个程序需要对一个包括许多文档的集合中计算出每个单词出现的数量，伪代码如下：
 
-```
+```shell
  map(String key, String value):
     // key: document name
     // value: document contents

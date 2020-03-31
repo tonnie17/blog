@@ -32,11 +32,13 @@ socket是一种ipc方法（介于传输层和应用层的一组api），允许�
 
 **SO_LINGER**：若有数据报发送则延迟关闭
 
-     l_onoff=0：发送完发送缓冲区的数据并发送FIN。
+```shell
+l_onoff=0：发送完发送缓冲区的数据并发送FIN。
 
-     l_onoff=1，l_linger=0：那么当close某个连接时TCP将终止该连接，丢弃发送缓冲区和接收缓冲区的数据并发送一个RST到对端，避免了TIME_WAIT。
+l_onoff=1，l_linger=0：那么当close某个连接时TCP将终止该连接，丢弃发送缓冲区和接收缓冲区的数据并发送一个RST到对端，避免了TIME_WAIT。
 
-     l_onoff=1，l_linger!=0：发送完发送缓冲区的数据并发送FIN，丢弃接收缓冲区的数据，如果在CLOSED前延滞时间到，返回EWOULDBLOCK错误。
+l_onoff=1，l_linger!=0：发送完发送缓冲区的数据并发送FIN，丢弃接收缓冲区的数据，如果在CLOSED前延滞时间到，返回EWOULDBLOCK错误。
+```
 
 **SO_RCVBUF**：接收缓冲区大小
 
@@ -64,13 +66,13 @@ socket是一种ipc方法（介于传输层和应用层的一组api），允许�
 
 **字节操纵函数**
 
-```
+```shell
 bzero: void bzero(void *dest, size_t nbyte)
 ```
 
 把目标字节串指定书目的字节置为0。
 
-```
+```shell
 memset: void memset(void *dest, int c, size_t len)
 ```
 
@@ -78,15 +80,11 @@ memset: void memset(void *dest, int c, size_t len)
 
 **地址转换函数**
 
-```
+```c
 - inet_aton: int inet_aton(const char *strptr, in_addr *addrptr) // 点分十进制->32位网络子节串二进制
 - inet_ntoa: char* inet_ntoa(struct in_addr addr) // 32位网络子节串二进制->点分十进制
-```
-
-```
 - inet_pton: int inet_pton(int family, const char *strptr, void *addrptr) // 点分十进制->32位网络子节串二进制
-- inet_
-: char* inet_ntop(int family, const void *addrptr, char *strptr, size_t len) // 32位网络子节串二进制->点分十进制
+- inet_ntop: char* inet_ntop(int family, const void *addrptr, char *strptr, size_t len) // 32位网络子节串二进制->点分十进制
 ```
 
 **read, write**
@@ -110,7 +108,7 @@ memset: void memset(void *dest, int c, size_t len)
 
 ### 创建一个socket: socket()
 
-```
+```shell
 int socket(int domain, int type, int protocol);
  - domain：与socket通信的domain。
  - type：socket类型，SOCK_STREAM（TCP），SOCK_DGRAM（UDP）。
@@ -120,7 +118,7 @@ int socket(int domain, int type, int protocol);
 
 ### 将socket绑定到地址：bind()
 
-```
+```shell
 int bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen);
  - sockfd：在socket()调用取得的文件描述符。
  - addr：要socket绑定到的地址。
@@ -130,7 +128,7 @@ int bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen);
 
 #### 通用socket地址结构struct sockaddr
 
-```
+```shell
 struct sockaddr {
      sa_family_t sa_family;     //地址族
      char sa_data[14];     //socket地址
@@ -139,7 +137,7 @@ struct sockaddr {
 
 ### 监听接入连接：listen()
 
-```
+```shell
 int listen(int sockfd, int backlog);
  - sockfd：socket文件描述符。
  - backlog：限制未决连接的数量（在调用accept()前收到connect()的连接）。
@@ -148,7 +146,7 @@ return: -1为监听失败。
 
 ### 接受连接：accept()
 
-```
+```shell
 int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
  - sockfd：socket文件描述符。
  - addr：对端socket的地址结构。
@@ -160,7 +158,7 @@ return：和对端连接的文件描述符。
 
 ### 连接到对等socket：connect()
 
-```
+```shell
 int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
  - sockfd：socket文件描述符。
  - addr：要连接到socket的地址。
@@ -184,7 +182,7 @@ int write(fd, buf, bufwrite);
 **unix domain socket**
 **unix domain socket地址：struct sockaddr_un**
 
-```
+```shell
 struct sockaddr_un {
      sa_family_t sun_family;     //AF_UNIX
      char sun_path[108];     //socket路径名
@@ -204,7 +202,7 @@ struct sockaddr_un {
 
 ## 创建互联socket对：socketpair()
 
-```
+```shell
 int socketpair(int domain, int type, int protocol, int sockfd[2]);
 ```
 
@@ -222,7 +220,7 @@ Socket的readline实现：
 
 *ipv4*：struct sockaddr_in
 
-```
+```shell
 struct in_addr {
      in_addr_t s_addr;     //32位无符号整数。
 };
@@ -253,7 +251,7 @@ CNAME：为常用的服务（FTP，WWW）指定CNAME记录。
 
 ### getaddrinfo()：将主机名和服务名转换为ip名和端口号
 
-```
+```c
 int getaddrinfo(const char *host, const char *service, const struct addrinfo *hints, struct addrinfo *result);
  - host：主机名
  - service：服务名
@@ -263,7 +261,7 @@ int getaddrinfo(const char *host, const char *service, const struct addrinfo *hi
 
 addrinfo细节：
 
-```
+```c
 struct addrinfo {
      int     ai_flags;
      int     ai_family;
@@ -278,13 +276,13 @@ struct addrinfo {
 
 释放addrinfo列表：freeaddrinfo()
 
-```
+```c
 void freeaddrinfo(struct addrinfo *result);
 ```
 
 ### getnameinfo()：给定一个socket地址结构，返回主机和服务名。
 
-```
+```c
 getnameinfo(const struct sockaddr *addr, socklen_t addrlen, char *host, size_t hostlen, char *service, size_t servlen, int flags);
  - addr：socket地址
  - addrlen：地址长度
@@ -312,7 +310,7 @@ UNIX DOMAIN SOCKET与INET DOMAIN SOCKET比较：
 
 **listen**
 
-```
+```c
 int listen(int sockfd, int backlog)
 ```
 
@@ -389,7 +387,7 @@ readn()和writen()，循环启用系统调用，确保请求的字节数总是�
 
 #### shutdown
 
-```
+```c
 int shutdown(int sockfd, int how);
  - sockfd：socket的文件描述符。
  - how：关闭方式
@@ -402,7 +400,7 @@ int shutdown(int sockfd, int how);
 
 ### 套接字的系统调用：recv()和send()
 
-```
+```c
 ssize_t recv(int sockfd, void *buffer, size_t length, int flags);
 ssize_t send(int sockfd, const void *buffer, size_t length, int flags);
 部分flags参数：
@@ -419,7 +417,7 @@ ssize_t send(int sockfd, const void *buffer, size_t length, int flags);
 
 ### 获取套接字地址getsockname()和getpeername()
 
-```
+```c
 getsockname(int sockfd, struct sockaddr *addr, socklen_t addrlen)：返回本地socket地址
 getpeername(int sockfd, struct sockaddr *addr, socklen_t addrlen)：返回对端socket地址
 ```
@@ -489,7 +487,7 @@ aio_read->无数据准备好->数据报准备好->数据从内核复制到用户
 
 fd_set
 
-```
+```c
 FD_ZERO(&set); /*将set清零使集合中不含任何fd*/
 FD_SET(fd, &set); /*将fd加入set集合*/
 FD_CLR(fd, &set); /*将fd从set集合中清除*/
@@ -516,7 +514,7 @@ EPOLLET——边缘触发
 
 #### select()
 
-```
+```c
 int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
  - readfds: 输入就绪的文件描述符集合。
  - writefds: 输出就绪的文件描述符集合。
@@ -526,7 +524,7 @@ return: 就绪的文件描述符数量。
 
 timeout参数
 
-```
+```c
 struct timeval {
     time_t    tv_sec;        //秒
     suseconds_t tv_usec;    //微秒
@@ -540,14 +538,14 @@ timeval参数：
 
 #### poll()
 
-```
+```c
 int poll(struct pollfd fds[], nfds_t nfds, int timeout);
 return: 就绪的文件描述符数量。
 ```
 
 **pollfd结构**
 
-```
+```c
 struct pollfd {
     int fd;        //文件描述符
     short events;    //请求事件
@@ -579,14 +577,14 @@ select()和poll()在套接字上通知的事件
 
 ##### 创建epoll实例epoll_create()
 
-```
+```c
 int epoll_create(int size);
  - size：制定了我们想要通过epoll检查的文件描述符个数。
 ```
 
 ##### 修改epoll的兴趣列表 epoll_ctl()
 
-```
+```c
 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *ev);
  - epfd：要修改的文件描述符
  - op：执行的操作
@@ -599,7 +597,7 @@ int epoll_ctl(int epfd, int op, int fd, struct epoll_event *ev);
 
 epoll_event定义
 
-```
+```c
 struct epoll_event {
     uint32_t    events;        //epoll事件
     epoll_data_t    data;    //用户数据
@@ -608,7 +606,7 @@ struct epoll_event {
 
 ##### 事件等待epoll_wait()
 
-```
+```c
 int epoll_wait(int epfd, struct epoll_event *evlist, int maxevents, int timeout);
  - epfd：文件描述符。
  - evlist：包含就绪文件描述符信息(epoll_event)的数组。

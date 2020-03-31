@@ -234,7 +234,7 @@ def main():
 
 用asyncio运行这段代码，结果是这样的：
 
-```
+```shell
 Got potato 4338641384...
 Got potato 4338641160...
 Got potato 4338614736...
@@ -260,7 +260,7 @@ def main():
 
 再来运行这段代码：
 
-```
+```shell
 Got potato 4423119312...
 Got tomato 4423119368...
 Got potato 4429291024...
@@ -657,7 +657,7 @@ if __name__ == '__main__':
 
 验证一下：
 
-```
+```shell
 # terminal 1
 $ nc localhost 25000
 hello world

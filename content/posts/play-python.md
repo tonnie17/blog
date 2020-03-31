@@ -15,7 +15,7 @@ Hello world!
 
 查看API手册
 
-```
+```shell
 ~ python
 11/17 17:02:27 2016
 Python 2.7.12 (default, Jun 29 2016, 14:05:02)
@@ -422,20 +422,20 @@ Out[4]: False
 
 性能排查
 
-```
+```shell
 python -m cProfile test.py
 ```
 
 格式化一个json文件
 
-```
+```shell
 python -m json.tool test.json
 echo '{"json":"obj"}' | python -m json.tool # 管道
 ```
 
 开启本地目录的HTTP服务器
 
-```
+```shell
 python2 -m SimpleHTTPServer 8080 # 2.x
 python3 -m http.server 8080 # 3.x
 ```
@@ -448,7 +448,7 @@ from __future__ import braces
 
 Python之禅
 
-```
+```shell
 In [1]: import this
 The Zen of Python, by Tim Peters
 

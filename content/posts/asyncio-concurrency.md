@@ -8,7 +8,7 @@ draft = false
 
 根据asyncio的文档介绍，asyncio的事件循环不是线程安全的，一个event loop只能在一个线程内调度和执行任务，并且同一时间只有一个任务在运行，这可以在asyncio的源码中观察到，当程序调用`get_event_loop`获取event loop时，会从一个本地的Thread Local对象获取属于当前线程的event loop：
 
-```
+```python
 class _Local(threading.local):
     _loop = None
     _set_called = False
@@ -32,7 +32,7 @@ def get_event_loop(self):
 
 在主线程中，调用`get_event_loop`总能返回属于主线程的event loop对象，如果是处于非主线程中，还需要调用`set_event_loop`方法指定一个event loop对象，这样`get_event_loop`才会获取到被标记的event loop对象：
 
-```
+```python
 def set_event_loop(self, loop):
     """Set the event loop."""
     self._local._set_called = True
@@ -44,7 +44,7 @@ def set_event_loop(self, loop):
 
 答案是：不能。这可以在下面这个例子中被观察到：
 
-```
+```python
 import asyncio
 import threading
 
@@ -63,7 +63,7 @@ loop.call_soon(task)
 
 为此，asyncio提供了一个`call_soon_threadsafe`的方法，专门解决针对线程安全的调用：
 
-```
+```python
 import asyncio
 import threading
 
@@ -84,7 +84,7 @@ loop.call_soon_threadsafe(task)
 
 其实他们之间的区别微乎其微，但`call_soon_threadsafe`与之相比主要在最后多了一个`_write_to_self`的调用：
 
-```
+```python
 def call_soon_threadsafe(self, callback, *args, context=None):
     """Like call_soon(), but thread-safe."""
     self._check_closed()
@@ -105,7 +105,7 @@ def call_soon_threadsafe(self, callback, *args, context=None):
 
 再举个例子来说，假设现在有一个场景，主进程运行着一个event loop，在某的时候会fork出一个子进程，子进程再去运行一个新建的event loop：
 
-```
+```python
 async def coro(loop):
     pid = os.fork()
     if pid:
@@ -122,7 +122,7 @@ loop.close()
 
 表面上看起来没什么问题，父进程和子进程各自运行自己的event loop，可实际上在3.5及之前的版本中运行这段代码，会抛出一个让人摸不着头脑的错误：
 
-```
+```shell
 ...
 cloop.run_forever()
   File "/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/asyncio/base_events.py", line 411, in run_forever
@@ -134,7 +134,7 @@ RuntimeError: Cannot run the event loop while another loop is running
 
 必须观察的足够仔细，才能发现，这是asyncio内部设计所导致的问题，每当调用event loop的运行方法时，asyncio都会去检测正在运行的event loop，这同样是通过一个Thread Local对象来查找的：
 
-```
+```python
 class _RunningLoop(threading.local):
     _loop = None
 _running_loop = _RunningLoop()
@@ -144,7 +144,7 @@ _running_loop = _RunningLoop()
 
 所幸的是，在3.6版本过后，这个问题已经被修复，解决方法也很简单，即为`_RunningLoop`新增一个pid属性，用来标识event loop所属的进程，在获取正在运行的event loop时同时检测进程号是否相等：
 
-```
+```python
 def _get_running_loop():
     """Return the running event loop or None.
 

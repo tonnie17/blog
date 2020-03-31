@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
 但是，这个程序让人感觉比较慢，有多慢呢？小梁在主函数中加了下面一段代码。
 
-```
+```python
 def main():
     from time import time
     start = time()    
@@ -81,7 +81,7 @@ def main():
 
 发现总共耗时7.6秒！！
 
-```
+```shell
 python movie.py
 Cost 7.619797945022583 seconds
 ```
@@ -134,7 +134,7 @@ def parse(url):
 
 结果一测，6.5秒！虽然比用urllib快了1秒多，但是总体来说，他们基本还是处于同一水平线的，程序并没有快很多，这一点的差距或许是requests对请求做了优化导致的。
 
-```
+```shell
 python movie_requests.py
 Cost 6.540304231643677 seconds
 ```
@@ -181,7 +181,7 @@ def parse(url):
 
 再一跑，咦，又足足提升了将近一秒！
 
-```
+```shell
 python movie_regex.py
 Cost 5.578997182846069 seconds
 ```
@@ -245,7 +245,7 @@ def parse(url):
 
 效果果然立竿见影！多线程有效的解决了阻塞等待的问题，这个程序足足比之前的程序快了80%！只需要1.4秒就可完成电影列表的抓取。
 
-```
+```shell
 python movie_multithread.py
 Cost 1.451986598968506 seconds
 ```
@@ -301,7 +301,7 @@ def parse(url):
 
 结果是2秒，甚至还不如多线程的版本。
 
-```
+```shell
 python movie_multiprocess.py
 Cost 2.029435634613037 seconds
 ```
@@ -382,7 +382,7 @@ gevent给予了我们一种以同步逻辑来书写异步程序的能力
 
 ，看monkey.patch_all()这段代码，它是整个程序实现异步的黑科技，当我们给程序打了猴子补丁后，Python程序在运行时会动态地将一些网络库（例如socket，thread）替换掉，变成异步的库。使得程序在进行网络操作的时候都变成异步的方式去工作，效率就自然提升很多了。
 
-```
+```shell
 python movie_gevent.py
 Cost 1.2647549629211425 seconds
 ```
@@ -448,7 +448,7 @@ def main():
 
 1.7秒，也不错。而且用上了async/await语法使得程序的可读性提高了不少。
 
-```
+```shell
 python movie_asyncio.py
 Cost 1.713043785095215 seconds
 ```
@@ -530,7 +530,7 @@ if __name__ == '__main__':
 
 输出结果：
 
-```
+```shell
 我拿到了5!
 我拿到了4!
 我拿到了3!

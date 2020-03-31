@@ -16,7 +16,7 @@ draft = false
 
 对于初学者来说，我们关心的只需这些步骤就够了。要检验这三个步骤，最简单的方法是先写出一个hello world。
 
-```
+```shell
 request->"hello world"->response
 ```
 
@@ -45,7 +45,7 @@ touch server.py
 
 心中默念The Zen of Python：
 
-```
+```shell
 Beautiful is better than ugly.
 Explicit is better than implicit.
 Simple is better than complex.
@@ -105,13 +105,13 @@ python server.py
 
 3. 视图函数生成一个http响应，返回一个json数据给客户端。
 
-   ```
-   HTTP/1.0 200 OK
-   Content-Type: application/json
-   Content-Length: 27
-   Server: Werkzeug/0.11.15 Python/3.5.2
-   Date: Thu, 26 Jan 2017 05:14:36 GMT
-   ```
+```shell
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 27
+Server: Werkzeug/0.11.15 Python/3.5.2
+Date: Thu, 26 Jan 2017 05:14:36 GMT
+```
 
 当我们输入python server.py时，会建立一个服务器（也叫应用程序服务器，即application server）来监听请求，并把请求转给flask来处理。那么这个服务器是如何跟python程序打交道的呢？答案就是[WSGI](http://archimedeanco.com/wsgi-tutorial/%23)(Web Server Gateway Interface)接口，它是server端（服务器）与application端（应用程序）之间的一套约定俗成的规范，使我们只要编写一个统一的接口，就能应用到不同的wsgi server上。用图表示它们的关系，就是下面这样的：
 
@@ -197,7 +197,7 @@ if __name__ == '__main__':
 
 - 添加一个todo
 
-```
+```shell
 http -f POST http://127.0.0.1:8000/todo content=好好学习
 HTTP/1.0 200 OK
 Content-Length: 0
@@ -208,7 +208,7 @@ Server: Werkzeug/0.11.15 Python/3.5.2
 
 - 查看todo列表
 
-```
+```shell
 http http://127.0.0.1:8000/todo
 HTTP/1.0 200 OK
 Content-Length: 203
@@ -225,7 +225,7 @@ Server: Werkzeug/0.11.15 Python/3.5.2
 
 - 修改todo状态
 
-```
+```shell
 http -f PUT http://127.0.0.1:8000/todo/6f2b28c4-1e83-45b2-8b86-20e28e21cd40/finish
 HTTP/1.0 200 OK
 Content-Length: 0
@@ -249,7 +249,7 @@ Server: Werkzeug/0.11.15 Python/3.5.2
 
 - 删除todo
 
-```
+```shell
 http -f DELETE http://127.0.0.1:8000/todo/6f2b28c4-1e83-45b2-8b86-20e28e21cd40
 HTTP/1.0 200 OK
 Content-Length: 0
@@ -369,7 +369,7 @@ def index():
 
 现在对这个接口进行性能测试：
 
-```
+```shell
 wrk -c 100 -t 12 -d 5s http://127.0.0.1:8000/todo
 Running 5s test @ http://127.0.0.1:8000/todo
   12 threads and 100 connections
@@ -384,7 +384,7 @@ Transfer/sec:     66.45KB
 
 rps只有43。我们继续进行改进，通过观察我们发现我们查询todo时需要通过created_at这个字段进行排序再过滤，这样以来每次查询都要先对10000条记录进行排序，效率自然变的很低，对于这个场景，可以对created_at这个字段做索引：
 
-```
+```python
 db.todos.ensureIndex({'created_at': -1})
 ```
 
@@ -441,7 +441,7 @@ db.todos.ensureIndex({'created_at': -1})
 
 现在再做一轮性能测试，有了索引之后就大大降低了排序的成本，rps提高到了298。
 
-```
+```shell
 wrk -c 100 -t 12 -d 5s http://127.0.0.1:8000/todo
 Running 5s test @ http://127.0.0.1:8000/todo
   12 threads and 100 connections
@@ -460,7 +460,7 @@ Transfer/sec:    458.87KB
 
 我们看[gunicorn](http://www.jianshu.com/p/docs.gunicorn.org/en/latest/design.html)文档可以得知，gunicorn是一个python编写的高效的WSGI HTTP服务器，gunicorn使用pre-fork模型（一个master进程管理多个child子进程），使用gunicorn的方法十分简单：
 
-```
+```shell
 gunicorn --workers=9 server:app --bind 127.0.0.1:8000
 ```
 
@@ -474,7 +474,7 @@ gunicorn --workers=9 server:app --bind 127.0.0.1:8000
 
 也就是说我们只需把flask实例的名字传给gunicorn就ok了：
 
-```
+```shell
 gunicorn --workers=9 server:app --bind 127.0.0.1:8000
 [2017-01-27 11:20:01 +0800] [5855] [INFO] Starting gunicorn 19.6.0
 [2017-01-27 11:20:01 +0800] [5855] [INFO] Listening at: http://127.0.0.1:8000 (5855)
@@ -496,7 +496,7 @@ gunicorn --workers=9 server:app --bind 127.0.0.1:8000
 
 继续进行性能测试，可以看到吞吐量又有了很大的提升：
 
-```
+```shell
 wrk -c 100 -t 12 -d 5s http://127.0.0.1:8000/todo
 Running 5s test @ http://127.0.0.1:8000/todo
   12 threads and 100 connections
@@ -510,13 +510,13 @@ Transfer/sec:      1.30MB
 
 那么gunicorn还能再优化吗，答案是肯定的。回到之前我们发现了这一行：
 
-```
+```shell
 [2017-01-27 11:20:01 +0800] [5855] [INFO] Using worker: sync
 ```
 
 也就是说，gunicorn worker使用的是sync（同步）模式来处理请求，那么它支持async（异步）模式吗，再看gunicorn的文档有下面一段说明：
 
-```
+```shell
 Async Workers
 The asynchronous workers available are based on Greenlets (via Eventlet and Gevent). Greenlets are an implementation of cooperative multi-threading for Python. In general, an application should be able to make use of these worker classes with no changes.
 ```
@@ -530,7 +530,7 @@ gunicorn有两个不错的async worker：
 
 [meinheld](https://github.com/mopemope/meinheld)是一个基于picoev的异步WSGI Web服务器，它可以很轻松地集成到gunicorn中，处理wsgi请求。
 
-```
+```shell
 gunicorn --workers=9 --worker-class="meinheld.gmeinheld.MeinheldWorker" server:app --bind 127.0.0.1:8000
 [2017-01-27 11:47:01 +0800] [7497] [INFO] Starting gunicorn 19.6.0
 [2017-01-27 11:47:01 +0800] [7497] [INFO] Listening at: http://127.0.0.1:8000 (7497)
@@ -548,7 +548,7 @@ gunicorn --workers=9 --worker-class="meinheld.gmeinheld.MeinheldWorker" server:a
 
 可以看到现在使用的是meinheld.gmeinheld.MeinheldWorker这个worker。再进行性能测试看看：
 
-```
+```shell
 wrk -c 100 -t 12 -d 5s http://127.0.0.1:8000/todo
 Running 5s test @ http://127.0.0.1:8000/todo
   12 threads and 100 connections
@@ -596,7 +596,7 @@ Transfer/sec:      1.71MB
 
 但仅仅是这样还是不足以应对高并发下的请求的，洪水般的请求势必是对数据库的一个重大考验，把请求数提升到1000，出现了大量了timeout：
 
-```
+```shell
 wrk -c 1000 -t 12 -d 5s http://127.0.0.1:8888/todo
 Running 5s test @ http://127.0.0.1:8888/todo
   12 threads and 1000 connections
@@ -639,7 +639,7 @@ def index():
 
 只有在第一次请求时接触到数据库，其余请求都会从缓存中读取，瞬间就提高了应用的rps。
 
-```
+```shell
 wrk -c 1000 -t 12 -d 5s http://127.0.0.1:8888/todo
 Running 5s test @ http://127.0.0.1:8888/todo
   12 threads and 1000 connections
@@ -665,7 +665,7 @@ Transfer/sec:      4.47MB
 
 首先要建立supervisor的配置文件：supervisord.conf
 
-```
+```shell
 [program:gunicorn]
 command=gunicorn --workers=9 --worker-class="meinheld.gmeinheld.MeinheldWorker" server:app --bind 127.0.0.1:8000
 autostart=true
@@ -676,7 +676,7 @@ stderr_logfile=error.log
 
 然后启动supervisord作为后台进程。
 
-```
+```shell
 supervisord -c supervisord.conf
 ```
 
@@ -727,7 +727,7 @@ Celery是基于Python的一个分布式的消息队列调度系统，我们把Ce
 
 将每个组件独立为一个docker容器：
 
-```
+```shell
 docker ps -a
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                     PORTS                                                NAMES
 cdca11112543        nginx               "nginx -g 'daemon off"   2 days ago          Exited (128) 2 days ago                                                         nginx

@@ -8,7 +8,7 @@ draft = false
 
 某日，在排查线上问题时，在dump线程后发现了一些“诡异”的异常：
 
-```
+```shell
   File "/usr/local/lib/python3.5/logging/__init__.py", line 1838, in info
     root.info(msg, *args, **kwargs)
   File "/usr/local/lib/python3.5/logging/__init__.py", line 1271, in info
@@ -85,7 +85,7 @@ g()
 
 可以看到输出并没有问题：
 
-```
+```shell
 1
 2
 1
@@ -126,7 +126,7 @@ p.start()
 
 执行输出，在程序输出两个2之后就立马阻塞住了：
 
-```
+```shell
 2
 2
 阻塞...
@@ -257,7 +257,7 @@ def fix_logging_module():
 
 而在Python 3.7版本之后，官方也给出了标准库的方法实现相同的功能：
 
-```
+```shell
 os.register_at_fork(*, before=None, after_in_parent=None, after_in_child=None)
 
 Register callables to be executed when a new child process is forked using os.fork() or similar process cloning APIs. The parameters are optional and keyword-only. Each specifies a different call point.

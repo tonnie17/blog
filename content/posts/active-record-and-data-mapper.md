@@ -22,7 +22,7 @@ draft = false
 
 Ruby和Laravel的ORM都采取了Active Record的模式，因此它们ORM可能像下面这样：
 
-```
+```shell
  $user = new User;
 $user->username = 'philipbrown';
 $user->save();
@@ -30,7 +30,7 @@ $user->save();
 
 领域对象直接对应着数据库中的一个表：
 
-```
+```shell
 +----+-------------+
 | id | username    |
 +----+-------------+
@@ -40,7 +40,7 @@ $user->save();
 
 我们再来看使用Data Mapper的ORM是怎样的：
 
-```
+```shell
 $user = new User;
 $user->username = 'philipbrown';
 EntityManager::persist($user);
@@ -54,11 +54,11 @@ EntityManager::persist($user);
 
 在ORM中，通常还要关注关系映射的问题，譬如回到上面的例子，一个User可能有一些Post，而且它们往往在其他的表中，这就需要处理跨表的映射关系。
 
-```
+```shell
 $posts = $user->posts;
 ```
 
-```
+```shell
 +----+---------+-------+
 | id | user_id | title |
 +----+---------+-------+

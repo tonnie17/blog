@@ -23,7 +23,7 @@ draft = false
 
 存在索引
 
-```
+```shell
 (A, B, C, D)
 ```
 
@@ -75,7 +75,7 @@ CITY = :CITY AND LNAME = :LNAME
 
 选择率公式
 
-```
+```shell
 选择率 = 100 x (某个键值对应的行数)/表的总记录数
 ```
 
@@ -181,7 +181,7 @@ ORDER BY FNAME
 
 假如ZIP=30103的地区有1000位名为Joneses的客户：
 
-```
+```shell
 索引	ZIP, LNAME, FNAME	TR = 1		TS = 1000
 表	    CUST				TR = 1	    TS = 999
 提取 1000 x 0.1 ms
@@ -193,7 +193,7 @@ LRT			TR = 2	  	TS = 1999
 
 非聚簇索引访问：
 
-```
+```shell
 索引	ZIP, LNAME, FNAME	TR = 1		TS = 1000
 表	    CUST				TR = 1000   TS = 0
 提取 1000 x 0.1 ms
@@ -205,7 +205,7 @@ LRT				TR = 1001	  	 TS = 1000
 
 添加聚簇列`CNO`使索引变成三星索引：
 
-```
+```shell
 索引	ZIP, LNAME, FNAME, CNO	TR = 1		TS = 1000
 表	CUST					 TR = 0   	 TS = 0
 提取 1000 x 0.1 ms
@@ -230,7 +230,7 @@ QUBE分析如下：
 
 三星索引：
 
-```
+```shell
 索引 CITY, LNAME, FNAME, CNO	TR = 1		TS = 1% x 10% x 1000000
 提取 1000 x 0.1 ms
 
@@ -241,7 +241,7 @@ LRT				TR = 1	  	 TS = 1000
 
 半宽索引
 
-```
+```shell
 索引 CITY, LNAME, FNAME, CNO	TR = 1		      TS = 1% x 1000000
 表   CUST					 	TR = 10% x 10000  TS = 0
 提取 1000 x 0.1 ms
@@ -253,7 +253,7 @@ LRT				TR = 1001	  	 TS = 10000
 
 宽索引
 
-```
+```shell
 索引 LNAME, FNAME, CITY, CNO	TR = 1		      TS = 1% x 1000000
 表   CUST					    TR = 0			  TS = 0
 提取 1000 x 0.1 ms

@@ -13,20 +13,20 @@ draft = false
 
 使用下面的shell命令安装Docker
 
-```
+```shell
 $ curl -sSL https://get.docker.com/ | sh
 ```
 
 安装成功后，使用下面的命令应该能显示Docker的版本信息，说明Docker已经被安装了
 
-```
+```shell
 $ docker -v
 Docker version 17.04.0-ce, build 4845c56
 ```
 
 接着我们使用Docker创建一个nginx的容器:
 
-```
+```shell
 $ docker run -d --name=web -p 80:80 nginx:latest
 ```
 
@@ -34,7 +34,7 @@ $ docker run -d --name=web -p 80:80 nginx:latest
 
 使用docker ps命令，可以列出正在运行的容器，可以看到，刚才基于nginx镜像创建的容器已经处于运行状态了：
 
-```
+```shell
 $ docker ps
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                         NAMES
 a89d281829f9        nginx:latest        "nginx -g 'daemon ..."   8 minutes ago       Up 8 minutes        0.0.0.0:80->80/tcp, 443/tcp   web
@@ -48,7 +48,7 @@ Docker容器本质上是一个运行的进程以及它需要的一些依赖，�
 
 使用docker images能看到目前的镜像：
 
-```
+```shell
 $ docker images
 REPOSITORY
 nginx                 latest              bedece1f06cc        10 minutes ago         54.3MB
@@ -56,13 +56,13 @@ nginx                 latest              bedece1f06cc        10 minutes ago    
 
 了解到这个事实之后，我们使用下面的命令进入刚才创建的容器内部
 
-```
+```shell
 $ docker exec -i -t web bash
 ```
 
 现在处于的是容器内部的根文件系统(rootfs)，它跟宿主机以及其他容器的环境是隔离开的，看起来这个容器就是一个独立的操作系统环境一样。使用ps命令可以看到容器内正在运行的进程：
 
-```
+```shell
 $ ps -l
 PID   USER     TIME   COMMAND
     1 root       0:00 nginx: master process nginx -g daemon off;
@@ -72,13 +72,13 @@ PID   USER     TIME   COMMAND
 
 使用exit命令可以从容器中退出，回到宿主机的环境：
 
-```
+```shell
 $ exit
 ```
 
 使用docker inspect命令我们可以看到关于这个容器的更多详细信息：
 
-```
+```shell
 $ docker inspect web
 ```
 
@@ -109,7 +109,7 @@ $ docker inspect web
 
 要解决这个问题，我们首先要知道，docker在启动的时候会在宿主机上创建一块名为docker0的网卡，可以用ifconfig查看：
 
-```
+```shell
 $ ifconfig
 docker0   Link encap:Ethernet  HWaddr 02:42:a4:e4:10:80
           inet addr:172.17.0.1  Bcast:0.0.0.0  Mask:255.255.0.0
@@ -124,7 +124,7 @@ docker0   Link encap:Ethernet  HWaddr 02:42:a4:e4:10:80
 
 使用ifconfig也可以看到这个veth对的存在：
 
-```
+```shell
 veth8231e5b Link encap:Ethernet  HWaddr 16:e8:f2:1d:e1:4d
           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
           RX packets:29 errors:0 dropped:0 overruns:0 frame:0
@@ -141,7 +141,7 @@ veth8231e5b Link encap:Ethernet  HWaddr 16:e8:f2:1d:e1:4d
 
 使用iptables -t nat命令可以看到添加的nat规则：
 
-```
+```shell
 $ iptables -t nat -xvL
 Chain PREROUTING (policy ACCEPT 376 packets, 21292 bytes)
     pkts      bytes target     prot opt in     out     source               destination
@@ -177,19 +177,19 @@ Chain DOCKER (2 references)
 
 甚至把安装django这个步骤也省了，直接通过一句命令来拉取一个安装了django的Python环境的镜像。
 
-```
+```shell
 $ docker pull django
 ```
 
 现在通过这个镜像运行django容器，同时进入容器Shell环境：
 
-```
+```shell
 $ docker run -it --name=app -p 8080:8000 django bash
 ```
 
 在/usr/src这个目录下新建一个app目录，然后用django-admin命令新建一个django项目：
 
-```
+```shell
 $ cd /usr/src
 $ mkdir app
 $ cd app
@@ -198,7 +198,7 @@ $ django-admin startproject django_app
 
 然后使用下面的命令，在容器8000端口上运行这个应用：
 
-```
+```shell
 $ python manage.py makemigartions
 $ python manage.py migrate
 $ python manage.py runserver 0.0.0.0:8000 &
@@ -206,7 +206,7 @@ $ python manage.py runserver 0.0.0.0:8000 &
 
 由于之前已经将容器的8000端口与宿主机的8080端口做了映射，因此我们可以通过访问宿主机的8080端口访问这个应用。
 
-```
+```shell
 $ exit #退出容器
 $ curl -L http://127.0.0.1:8080/
 ```
@@ -217,7 +217,7 @@ $ curl -L http://127.0.0.1:8080/
 
 使用redis作为ping的数据库，与之前类似，拉取redis的镜像，运行容器。
 
-```
+```shell
 $ docker pull redis
 $ docker run -d --name=redis -p 6379 redis
 ```
@@ -226,7 +226,7 @@ $ docker run -d --name=redis -p 6379 redis
 
 删除掉之前的容器，现在重新修改django容器的启动方式：
 
-```
+```shell
 $ docker run -it --name=app -p 8080:8000 -v /code:/usr/src/app --link=redis:db django bash
 ```
 
@@ -237,7 +237,7 @@ $ docker run -it --name=app -p 8080:8000 -v /code:/usr/src/app --link=redis:db d
 
 现在进入到django容器，通过ping命令确认django容器能访问到redis容器：
 
-```
+```shell
 $ ping db
 PING db (192.168.32.12): 56 data bytes
 64 bytes from 192.168.32.12: icmp_seq=0 ttl=64 time=0.463 ms
@@ -246,13 +246,13 @@ PING db (192.168.32.12): 56 data bytes
 
 像之前一样，建立一个项目，接着使用django-admin新建一个应用：
 
-```
+```shell
 $ django-admin startapp ping
 ```
 
 编写ping的视图，添加到项目的urls.py：
 
-```
+```python
 from django.shortcuts import render
 from django.http import HttpResponse
 import redis
@@ -277,13 +277,13 @@ urlpatterns = [
 
 别忘了安装redis的python驱动：
 
-```
+```shell
 $ pip install redis
 ```
 
 运行django应用，访问应用的根地址，如无意外便能看到随着页面刷新累加的数字。
 
-```
+```shell
 $ curl http://127.0.0.1/
 3243
 $ curl http://127.0.0.1/
@@ -372,13 +372,13 @@ CMD supervisord -c /etc/supervisord.conf
 
 完成Dockerfile的编写后，只需要用docker build命令就能构建出一个新的镜像：
 
-```
+```shell
 docker build -t test/app .
 ```
 
 接着就可以根据这个镜像来创建和运行容器了：
 
-```
+```shell
 $ docker run -d --name=app -p 8080:8000 -v /code:/usr/src/app --link=redis:db test/app
 ```
 
@@ -392,7 +392,7 @@ $ docker run -d --name=app -p 8080:8000 -v /code:/usr/src/app --link=redis:db te
 
 很明显，我们不能只依赖一个节点，还要通过建立主从节点防止数据的丢失。再创建两个redis容器，通过slaveof指令为Redis建立两个副本。
 
-```
+```shell
 $ docker run -d --name=redis_slave_1 -p 6380:6379 --link=redis:master redis redis-server --slaveof master 6379
 $ docker run -d --name=redis_slave_2 -p 6381:6379 --link=redis:master redis redis-server --slaveof master 6379
 ```
@@ -419,7 +419,7 @@ ENTRYPOINT ["/run-sentinel.sh"]
 
 Sentinel的配置文件：
 
-```
+```docker
 port 26379
 
 dir /tmp
@@ -443,7 +443,7 @@ exec redis-server /etc/sentinel.conf --sentinel
 
 构建出Sentinel的镜像文件，容器运行的方式类似于redis：
 
-```
+```shell
 $ docker run -d --name=sentinel_1 --link=redis:redis-master [build_sentinel_image]
 $ docker run -d --name=sentinel_2 --link=redis:redis-master [build_sentinel_image]
 $ docker run -d --name=sentinel_3 --link=redis:redis-master [build_sentinel_image]
@@ -455,7 +455,7 @@ $ docker run -d --name=sentinel_3 --link=redis:redis-master [build_sentinel_imag
 
 简单验证一下当redis主节点挂掉后sentinel怎么处理：
 
-```
+```shell
 $ docker pause redis-master
 $ docker logs -f --tail=100 sentinel_1
 1:X 17 Apr 14:32:51.633 # +sdown master master 192.168.32.12 6379
@@ -502,7 +502,7 @@ nginx是一个非常流行的web服务器，用它完成这个当然没问题，
 
 首先把haproxy的官方镜像下载下来：
 
-```
+```shell
 $ docker pull haproxy
 ```
 
@@ -510,7 +510,7 @@ $ docker pull haproxy
 
 这次同样选择编写Dockerfile的方式构建自定的haproxy镜像：
 
-```
+```docker
 FROM haproxy:latest
 
 COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
@@ -518,13 +518,13 @@ COPY haproxy.cfg /usr/local/etc/haproxy/haproxy.cfg
 
 暂时只需要把配置文件复制到配置目录就可以了，因为通过看haproxy的Dockerfile可以看到最后有这么一行，于是乎偷个懒~
 
-```
+```docker
 CMD ["haproxy", "-f", "/usr/local/etc/haproxy/haproxy.cfg"]
 ```
 
 haproxy的配置文件如下：
 
-```
+```shell
 global
     log 127.0.0.1 local0
     maxconn 4096
@@ -555,7 +555,7 @@ backend webserver
 
 这里的app即web应用容器的主机名，运行haproxy容器时用link连接三个web应用容器，绑定到宿主机的80端口。
 
-```
+```shell
 $ docker run -d --name=lb -p 80:6301 --link app1:app1 --link app2:app2 --link app3:app3  [build_haproxy_image]
 ```
 
@@ -571,7 +571,7 @@ $ docker run -d --name=lb -p 80:6301 --link app1:app1 --link app2:app2 --link ap
 
 创建一个etcd的容器：
 
-```
+```shell
 docker run -d \
 -e CLIENT_URLS=http://0.0.0.0:2379 \
 -e PEER_URLS=http://0.0.0.0:2380 \
@@ -613,7 +613,7 @@ CMD ["./boot.sh"]
 
 通过之前haproxy的配置文件创建出新的模版文件，修改backend的配置，加入模版指令，表示confd从etcd的前缀为/app/servers的所有key中获取键值对，作为server的key的value，逐条追加到配置文件中去：
 
-```
+```shell
 backend webserver
     {{range gets "/app/servers/*"}}
     server {{base .Key}} {{.Value}} check inter 2000 rise 2 fall 5
@@ -648,25 +648,25 @@ exec /docker-entrypoint.sh haproxy -f /usr/local/etc/haproxy/haproxy.cfg
 
 watcher.sh启动了confd间隔一段时间去访问etcd的地址，检查是否有更新：
 
-```
+```shell
 ./confd -interval 10 -node http://etcd:2379 -config-file /etc/confd/conf.d/haproxy.toml
 ```
 
 启动haproxy时建立与etcd容器间的连接：
 
-```
+```shell
 $ docker run -d --name=lb -p 80:6301 --link app1:app1 --link app2:app2 --link app3:app3  --link=etcd:etcd [build_haproxy_image]
 ```
 
 下面通过调用etcd的api在/app/servers上新建一个服务器节点：
 
-```
+```shell
 $ docker exec -it etcd etcdctl set /app/servers/app1 172.17.0.5:8000
 ```
 
 观察haproxy容器的日志，可以看到配置被更新了：
 
-```
+```shell
 $ docker logs -f lb
 2017-04-16T16:24:00Z 78745b65a3d4 ./confd[7]: INFO Backend set to etcd
 <7>haproxy-systemd-wrapper: executing /usr/local/sbin/haproxy -p /run/haproxy.pid -f /usr/local/etc/haproxy/haproxy.cfg -Ds
@@ -760,7 +760,7 @@ services:
 
 只需几条命令，就能启动和伸缩容器：
 
-```
+```shell
 docker-compose -f docker-compose.yml up -d
 docker-compose -f docker-compose.yml scale redis-slave=2
 docker-compose -f docker-compose.yml scale sentinel=3
