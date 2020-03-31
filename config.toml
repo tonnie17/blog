@@ -7,3 +7,6 @@ googleAnalytics = "UA-117516487-1"
 [params]
     enableRSS=true
     enableGoogleAnalytics=true
+
+[markup.goldmark.renderer]
+    unsafe= true

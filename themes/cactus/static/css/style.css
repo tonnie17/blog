@@ -938,6 +938,10 @@ code {
     color: #ff3356;
 }
 
+code.hljs {
+    border-radius: 0;
+}
+
 /*
 
 Gruvbox style (dark) (c) Pavel Pertsev (original style at https://github.com/morhetz/gruvbox)

@@ -81,7 +81,7 @@ Docker首次发布时，Docker Engine由两个核心组件构成：LXC和Docker 
 
 ![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-5bffeb705fe4c4249d34bfdfcd223681_1440w.jpg)
 
-https://www.zhihu.com/video/1166455714251264000
+[![Docker容器操作](https://pica.zhimg.com/v2-30d1cdc57785771c8a5faf27506168af.jpg "")](https://www.zhihu.com/video/1166455714251264000)
 
 创建一个Docker容器
 
@@ -95,7 +95,7 @@ Dockerfile是一个用以构建镜像的文本文件，它包括了一系列的�
 
 ![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-53e9c534942ca4cf9890a29917e3f334_1440w.jpg)
 
-https://www.zhihu.com/video/1166455944463732736
+[![Dockerfile](https://pic2.zhimg.com/v2-cb087b98a105d86955c50f91166bf4ed.jpg "")](https://www.zhihu.com/video/1166455944463732736)
 
 编写一个Dockerfile
 
@@ -107,7 +107,7 @@ https://www.zhihu.com/video/1166455944463732736
 
 这个功能在某些情况下会十分有用，比如我们在编译应用时需要用到许多依赖，但想要保持镜像尽可能地小，这时候就可以通过多阶段构建来将编译环境和运行环境分离，在最终生成的镜像中只保留编译好的可执行文件。
 
-https://www.zhihu.com/video/1166456122667143168
+[![多阶段构建](https://pic3.zhimg.com/v2-bd585d61bb1549226444e7764914e83e.jpg "")](https://www.zhihu.com/video/1166456122667143168)
 
 Dockerfile多阶段构建
 
@@ -155,7 +155,7 @@ Docker内置了以下几种网络驱动，其中bridge桥接网络是Docker默�
 
 ![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-45e784fd6922ec933374811f62c07b4c_1440w.jpg)
 
-https://www.zhihu.com/video/1166460676783669248
+[![Docker DNS](https://pic2.zhimg.com/v2-3f05b793e9b8a5be85ad7a5c648cb7fd.jpg "")](https://www.zhihu.com/video/1166460676783669248)
 
 Docker DNS
 
@@ -171,10 +171,9 @@ Docker Machine是一个用来在虚拟机安装Docker Engine的工具，以及�
 
 Docker Compose是一个定义和运行多容器应用的工具，通过编写Compose文件来定义和配置应用，只需要用docker-compose一条命令就可以一次把所有定义好的服务启动起来。
 
-https://www.zhihu.com/video/1166457477158903808
+[![Docker Compose](https://pic3.zhimg.com/v2-0bfe18b9c18a397079dd69a3e726a55e.jpg "")](https://www.zhihu.com/video/1166457477158903808)
 
 Docker Compose部署应用
-
 
 
 ![img](https://image-1301539196.cos.ap-guangzhou.myqcloud.com/v2-e6877502c5843b97c6cfa4f850e6f14f_1440w.jpg)
@@ -191,7 +190,7 @@ Docker Swarm是Docker原生的集群管理和调度工具，它把多个Docker�
 
 Docker Swarm提供了多种调度策略，来按需选择将容器分配到不同的节点上。
 
-https://www.zhihu.com/video/1166463996525010944
+[![Docker Swarm](https://picb.zhimg.com/v2-e7e51b242e9c50cbf4474a298cc39787.jpg "")](https://www.zhihu.com/video/1166463996525010944)
 
 使用Swarm部署应用
 
