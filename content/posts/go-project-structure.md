@@ -1,5 +1,5 @@
 +++
-title = "Go项目组织实践"
+title = "go项目组织实践"
 date = 2020-04-03T00:00:00+08:00
 tags = ["go"]
 categories = [""]
