@@ -6,9 +6,6 @@ categories = [""]
 draft = false
 +++
 
-
-# 用GKE管理Deployments
-
 在本节中介绍了一些 Dev Ops 在管理部署阶段中使用的一些手段，例如：“持续部署”，“蓝绿部署”和“金丝雀部署”等等。
 
 Heterogeneous deployments（异构部署）通常包含两个或多个特定的基础设施或地区以解决特殊的技术需求，根据不同的部署细节，Heterogeneous deployments 也被称作 "hybrid",  "multi-cloud" 或 "public-private"，包括在跨区域的单一云，多公有云（multi-cloud），私有云和公有云的混合（"hybrid"， "public-private"）。
