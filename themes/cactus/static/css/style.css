@@ -181,14 +181,14 @@ nav.main-nav a {
 top: 8px;
 right: 6px;
 padding: 8px 12px;
-color: #5badf0;
+color: #1169ec;
 font-size: 13px;
 line-height: 1.35;
 border-radius: 3px;
 }
 
 nav.main-nav a.cta {
-background: #5badf0;
+background: #1169ec;
 color: #fff;
 margin-left: 12px;
 }
@@ -238,12 +238,12 @@ border-radius: 50%;
 
 a, #title, #post-list a:hover, #title:hover {
 text-decoration: none;
-color: #5badf0;
-color: #5694f1;
+color: #1169ec;
+color: #1169ec;
 }
 
 p a {
-color: #5694f1;
+color: #1169ec;
 }
 
 a, #post-nav a, #post-list a {
@@ -391,7 +391,7 @@ color: #fff;
 }
 
 p.small {
-color: #bbb;
+color: rgb(56, 54, 54);
 font-size: 14px;
 line-height: 1.5;
 display: block;
@@ -498,7 +498,7 @@ float: right;
 position: relative;
 top: 1px;
 font: 300 17px/1.8 "Helvetica Neue", helvetica, Arial, sans-serif;
-color: #bbb;
+color: rgb(56, 54, 54);
 }
 
 #post-list-footer {
@@ -676,7 +676,7 @@ color: #bbb;
 }
 
 #archive-list li a:hover, #archive-list li:hover .dates {
-color: #5694f1;
+color: #1169ec;
 }
 
 #post-meta img.avatar {
